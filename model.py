@@ -1,8 +1,14 @@
 from keras.models import Sequential
 from keras.layers import Lambda, Conv2D, Dense, Flatten
+from keras.metrics import accuracy
 
-height = 640
-width = 330
+
+# height = 640
+# width = 330
+# layers = 3
+
+height = 220
+width = 66
 layers = 3
 
 def neuralNet():
@@ -35,7 +41,7 @@ def neuralNet():
 
     model.add(Dense(1))
 
-    model.compile(loss='mean_squared_error', optimizer='rmsprop')
+    model.compile(loss='mean_squared_error', optimizer='adam')
 
     return model
 

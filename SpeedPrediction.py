@@ -1,14 +1,22 @@
 import model
 import cv2 as cv
 import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
 
 
 
-height = 640
-width = 330
+
+# height = 640
+# width = 330
+# layers = 3
+
+height = 220
+width = 66
 layers = 3
 
 max =  20399
+
 
 speed = np.loadtxt('speed_challenge_2017/data/train.txt')
 
@@ -31,23 +39,47 @@ for i in range (1,max):
 
 x_input = np.array([train])
 x_input = x_input.reshape(-1,height,width,layers)
-print(x_input.shape)
+speed = speed[1:max]
 
-#np.save('input', x_input)
-
-# trainx = np.load('input')
-
-# input shape
-# frame = frame.reshape(-1,height,width,layers)
+randomize = np.arange(len(x_input))
+np.random.shuffle(randomize)
+x_input = x_input[randomize]
+speed = speed[randomize]
 
 model = model.neuralNet()
 
-model.load_weights('model.h5')
+#model.load_weights('model.h5')
 
-history = model.fit(x_input, speed[1:max], epochs = 5, validation_split=0.3)
+history = model.fit(x_input, speed, epochs = 20
+                    , validation_split=0.2, shuffle=True)
+
+
 
 model.save("model.h5")
+
+print(history.history.keys())
+
+# # Plot training & validation accuracy values
+# plt.plot(history.history['mse'])
+# plt.plot(history.history['val_mse'])
+# plt.title('Model accuracy')
+# plt.ylabel('MSE')
+# plt.xlabel('Epoch')
+# plt.legend(['Train', 'Test'], loc='upper left')
+# plt.show()
+
+# Plot training & validation loss values
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('Model loss')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Test'], loc='upper left')
+plt.show()
+
+
 
 test = x_input[1].reshape(-1,height,width,layers)
 
 print(model.predict(test))
+print(speed[1])

@@ -1,8 +1,14 @@
+
+# height = 640
+# width = 330
+# layers = 3
+
+
 import cv2 as cv
 import numpy as np
 
-height = 640
-width = 330
+height = 220
+width = 66
 layers = 3
 
 #Steps to accomplish
@@ -42,7 +48,7 @@ while (cap.isOpened()):
     hsv[..., 0] = ang * 180 / np.pi / 2
     hsv[..., 2] = cv.normalize(mag, None, 0, 255, cv.NORM_MINMAX)
     bgr = cv.cvtColor(hsv, cv.COLOR_HSV2BGR)
-
+    bgr = cv.resize(bgr,( height, width), interpolation = cv.INTER_AREA)
 
     #cv.imwrite(path + 'test' + str(i) + '.jpg', frame)
     cv.imwrite(path + 'opticalhsv' + str(i) + '.png',bgr)
